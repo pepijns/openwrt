@@ -19,7 +19,7 @@ jobs:
         DEBIAN_FRONTEND: noninteractive
       run: |
         sudo apt -qq update
-        sudo apt -qq upgrade
+        # sudo apt -qq upgrade
         # sudo apt -qq install build-essentials
         sudo mkdir -p /workdir
         cd /workdir
