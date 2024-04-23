@@ -15,7 +15,6 @@ jobs:
       uses: actions/checkout@main
 
     - name: Do everything
-      working-directory: ./openwrt
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
