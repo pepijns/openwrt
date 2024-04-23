@@ -1,6 +1,10 @@
 name: OpenWrt Builder
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+  push:    
+    branches: 
+      - openwrt-23.05-nss-qsdk11
 
 jobs:
   build:
