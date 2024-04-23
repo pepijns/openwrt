@@ -23,10 +23,10 @@ jobs:
         # sudo apt -qq install build-essentials
 
         # cd openwrt
-        cp diffconfig /diffconfig
+        cp diffconfig ../diffconfig
         git reset --hard HEAD~1
         git remote add upstream https://git.openwrt.org/openwrt/openwrt.git
         git fetch upstream && git rebase upstream/openwrt-23.05
-        cp /diffconfig diffconfig
+        cp ../diffconfig diffconfig
         ./scripts/feeds update -a && ./scripts/feeds install -a && cp diffconfig .config && make defconfig && ./scripts/getver.sh
         make -j5
