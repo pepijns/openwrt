@@ -1,0 +1,27 @@
+name: OpenWrt Builder
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@main
+
+    - name: Do everything
+      env:
+        DEBIAN_FRONTEND: noninteractive
+      run: |
+        sudo apt -qq update
+        sudo apt -qq install build-essentials
+        sudo mkdir -p /workdir
+        cd /workdir
+        git clone -b openwrt-23.05-nss-qsdk11 https://github.com/pepijns/openwrt.git
+        cd openwrt
+        cp diffconfig /diffconfig
+        git reset --hard HEAD~1
+        git remote add upstream https://git.openwrt.org/openwrt/openwrt.git
+        git fetch upstream && git rebase upstream/openwrt-23.05
+        cp /diffconfig diffconfig
+        ./scripts/feeds update -a && ./scripts/feeds install -a && cp diffconfig .config && make defconfig && ./scripts/getver.sh
+        make -j5
