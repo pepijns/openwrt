@@ -11,13 +11,12 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@main
-
     - name: Do everything
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
+        git clone -b openwrt-23.05-nss-qsdk11 https://github.com/pepijns/openwrt.git
+        cd openwrt
         sudo apt -qq update
         # sudo apt -qq upgrade
         # sudo apt -qq install build-essentials
