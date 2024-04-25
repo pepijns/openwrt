@@ -1,4 +1,4 @@
-name: OpenWrt Builder
+name: OpenWrt R7800 Builder
 
 on: 
   workflow_dispatch:
@@ -11,28 +11,42 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: Do everything
-      env:
-        DEBIAN_FRONTEND: noninteractive
-      run: |
-        sudo apt -qq update
-        sudo apt -qq upgrade
-        git config --global user.email "runner@example.com"
-        git config --global user.name "runner"
-        git clone -b openwrt-23.05-nss-qsdk11 https://github.com/pepijns/openwrt.git
-        cd openwrt
-        cp diffconfig ../diffconfig
-        git remote add upstream https://git.openwrt.org/openwrt/openwrt.git
-        git fetch upstream && git rebase upstream/openwrt-23.05
-        cp ../diffconfig diffconfig
-        ./scripts/feeds update -a && ./scripts/feeds install -a && cp diffconfig .config && make defconfig && ./scripts/getver.sh
-        make -j5
-    - name: Upload
-      uses: actions/upload-artifact@v4
-      with:
-        name: package
-        path: |
-          openwrt/bin/targets/ipq806x/generic/
-          !openwrt/bin/targets/ipq806x/generic/packages/
-          !*.buildinfo
-          !profiles.json
+      - name: Set up build environment
+        env:
+          DEBIAN_FRONTEND: noninteractive
+        run: |
+          sudo apt -qq update
+          sudo apt -qq upgrade
+          git config --global user.email "runner@example.com"
+          git config --global user.name "runner"
+
+      - name: Clone openwrt-23.05-nss-qsdk11 branch
+        run: |
+          git clone -b openwrt-23.05-nss-qsdk11 https://github.com/pepijns/openwrt.git
+          cd openwrt
+
+      - name: Move diffconfig
+        run: |
+          cp diffconfig ../diffconfig
+
+      - name: Rebase latest commits from 23.05
+        run: |
+          cp diffconfig ../diffconfig
+          git remote add upstream https://git.openwrt.org/openwrt/openwrt.git
+          git fetch upstream && git rebase upstream/openwrt-23.05
+      
+      - name: Restore diffconfig
+        run: |
+          cp ../diffconfig diffconfig
+          
+      - name: Build
+        run: |
+          ./scripts/feeds update -a && ./scripts/feeds install -a && cp diffconfig .config && make defconfig && ./scripts/getver.sh
+          make -j5
+
+      - name: Upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: package
+          path: |
+            openwrt/bin/targets/ipq806x/generic/
