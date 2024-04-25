@@ -30,7 +30,7 @@ jobs:
 
       - name: Rebase latest commits from 23.05
         run: |
-          cp diffconfig ../diffconfig
+          cd openwrt
           git remote add upstream https://git.openwrt.org/openwrt/openwrt.git
           git fetch upstream && git rebase upstream/openwrt-23.05
       
