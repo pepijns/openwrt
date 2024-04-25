@@ -27,7 +27,7 @@ jobs:
 
       - name: Move diffconfig
         run: |
-          cp diffconfig ../diffconfig
+          cp openwrt/diffconfig ./diffconfig
 
       - name: Rebase latest commits from 23.05
         run: |
@@ -37,7 +37,7 @@ jobs:
       
       - name: Restore diffconfig
         run: |
-          cp ../diffconfig diffconfig
+          cp ./diffconfig openwrt/diffconfig
           
       - name: Build
         run: |
