@@ -23,7 +23,6 @@ jobs:
       - name: Clone openwrt-23.05-nss-qsdk11 branch
         run: |
           git clone -b openwrt-23.05-nss-qsdk11 https://github.com/pepijns/openwrt.git
-          cd openwrt
 
       - name: Move diffconfig
         run: |
@@ -41,6 +40,7 @@ jobs:
           
       - name: Build
         run: |
+          cd openwrt
           ./scripts/feeds update -a && ./scripts/feeds install -a && cp diffconfig .config && make defconfig && ./scripts/getver.sh
           make -j5
 
