@@ -15,8 +15,8 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
-          sudo apt -qq update
-          sudo apt -qq upgrade
+          sudo apt-get -qq update
+          sudo apt-get -qq upgrade
           git config --global user.email "runner@example.com"
           git config --global user.name "runner"
 
@@ -37,13 +37,14 @@ jobs:
       
       - name: Restore diffconfig
         run: |
-          cp ./diffconfig openwrt/.config
+          cp ./diffconfig openwrt/diffconfig
           
       - name: Build
         run: |
           cd openwrt
           ./scripts/feeds update -a 
           ./scripts/feeds install -a 
+          cp diffconfig .config 
           make defconfig 
           ./scripts/getver.sh
           make -j5
