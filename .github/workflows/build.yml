@@ -32,16 +32,20 @@ jobs:
         run: |
           cd openwrt
           git remote add upstream https://git.openwrt.org/openwrt/openwrt.git
-          git fetch upstream && git rebase upstream/openwrt-23.05
+          git fetch upstream
+          git rebase upstream/openwrt-23.05
       
       - name: Restore diffconfig
         run: |
-          cp ./diffconfig openwrt/diffconfig
+          cp ./diffconfig openwrt/.config
           
       - name: Build
         run: |
           cd openwrt
-          ./scripts/feeds update -a && ./scripts/feeds install -a && cp diffconfig .config && make defconfig && ./scripts/getver.sh
+          ./scripts/feeds update -a 
+          ./scripts/feeds install -a 
+          make defconfig 
+          ./scripts/getver.sh
           make -j5
 
       - name: Upload
