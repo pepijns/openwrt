@@ -60,5 +60,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           repository: pepijns/openwrt
+          tag_name: openwrt-23.05
           files: |
             openwrt/bin/targets/ipq806x/generic/
